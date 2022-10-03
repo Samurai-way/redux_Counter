@@ -1,26 +1,51 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import style from './App.module.css';
+import {Counter} from "./components/counter/Counter";
+import {Route, Routes} from "react-router-dom";
+import {Setting} from "./components/setting/Setting";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./components/redux/store";
+import {incrementAC, resetAC, setMaxValueAC, setStartValueAC} from "./components/redux/couterReducer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+
+    const count = useSelector<AppRootStateType, number>(state => state.counterReducer.count)
+    const maxValue = useSelector<AppRootStateType, number>(state => state.counterReducer.maxValue)
+    const startValue = useSelector<AppRootStateType, number>(state => state.counterReducer.startValue)
+
+    const dispatch = useDispatch()
+
+    const incrementHandler = (e: number) => {
+        dispatch(incrementAC(e))
+    }
+
+    const resetHandler = (e: number) => {
+        dispatch(resetAC(e))
+    }
+
+    const setSTARTvalue = (number: number) => {
+        dispatch(setStartValueAC(number))
+    }
+
+    const setMaxValue = (number: number) => {
+        dispatch(setMaxValueAC(number))
+    }
+
+    return (
+        <div className={style.wrapper}>
+            <Routes>
+                <Route path={'/'} element={<Counter
+                    count={count}
+                    incrementHandler={incrementHandler}
+                    resetHandler={resetHandler}
+                    maxValue={maxValue}
+                    startValue={startValue}
+                />}/>
+                <Route path={'/setting'} element={<Setting
+                    setSTARTvalue={setSTARTvalue}
+                    setMaxValue={setMaxValue}
+                />}/>
+            </Routes>
+        </div>
+    );
 }
-
-export default App;
