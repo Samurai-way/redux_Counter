@@ -36,12 +36,15 @@ export const Setting = (props: SettingPropsType) => {
         setStart(value)
     }
 
+    const maxStyle = max < 0 || start < 0 ? errorCOLOR : undefined
+    const startStyle = start < 0 || max < 0 ? errorCOLOR : undefined
+
     return (
         <div className={style.wrapper}>
             <div className={style.inputs_container}>
                 <div className={style.max}>max value:
                     <input
-                        style={max < 0 || start < 0 ? errorCOLOR : undefined}
+                        style={maxStyle}
                         onChange={setMaxValueChange}
                         value={max}
                         className={style.input_max}
@@ -52,7 +55,7 @@ export const Setting = (props: SettingPropsType) => {
                     <input
                         value={start}
                         onChange={setStartValueChange}
-                        style={start < 0 || max < 0 ? errorCOLOR : undefined}
+                        style={startStyle}
                         className={style.input_start}
                         type={'number'}/></div>
             </div>
